@@ -1,36 +1,42 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Wishlist2.Models;
 
 namespace Wishlist2.Repositories
 {
   public class WishesRepository
   {
-    internal IEnumerable<Wish> Get()
+    private readonly IDbConnection _db;
+    public WishesRepository(IDbConnection db)
+    {
+      _db = db;
+    }
+    public IEnumerable<Wish> Get()
     {
       throw new NotImplementedException();
     }
 
-    internal IEnumerable<Wish> GetWishesByUserId(string userId)
+    public IEnumerable<Wish> GetWishesByUserId(string userId)
     {
       throw new NotImplementedException();
     }
-    internal Wish GetWishByWishId(int id)
-    {
-      throw new NotImplementedException();
-    }
-
-    internal int Create(Wish newWish)
+    public Wish GetWishByWishId(int id)
     {
       throw new NotImplementedException();
     }
 
-    internal void Edit(Wish wish)
+    public int Create(Wish newWish)
     {
       throw new NotImplementedException();
     }
 
-    internal void Delete(int id)
+    public void Edit(Wish wish)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void Delete(int id)
     {
       throw new NotImplementedException();
     }
