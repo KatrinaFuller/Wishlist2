@@ -1,38 +1,72 @@
 using System;
+using System.Collections.Generic;
 using Wishlist2.Models;
+using Wishlist2.Repositories;
 
 namespace Wishlist2.Services
 {
   public class WishesService
   {
-    internal object Get()
+    public readonly WishesRepository _repo;
+    public WishesService(WishesRepository repo)
     {
-      throw new NotImplementedException();
+      _repo = repo;
+    }
+    public IEnumerable<Wish> Get()
+    {
+      return _repo.Get();
     }
 
-    internal object GetWishesByUserId(string id)
+    public IEnumerable<Wish> GetWishesByUserId(string userId)
     {
-      throw new NotImplementedException();
+      IEnumerable<Wish> exists = _repo.GetWishesByUserId(userId);
+      if (exists == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return exists;
     }
 
-    internal object GetWishByWishId(int id)
+    public Wish GetWishByWishId(int id)
     {
-      throw new NotImplementedException();
+      Wish exists = _repo.GetWishByWishId(id);
+      if (exists == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return exists;
     }
 
-    internal object Create(Wish newWish)
+    public Wish Create(Wish newWish)
     {
-      throw new NotImplementedException();
+      int id = _repo.Create(newWish);
+      newWish.Id = id;
+      return newWish;
     }
 
-    internal object Edit(Wish editWish)
+    public Wish Edit(Wish editWish)
     {
-      throw new NotImplementedException();
+      Wish wish = _repo.GetWishByWishId(editWish.Id);
+      if (wish == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      wish.Name = editWish.Name;
+      wish.Description = editWish.Description;
+      wish.Img = editWish.Img;
+      _repo.Edit(wish);
+      return wish;
     }
 
-    internal object Delete(int id, string userId)
+    public string Delete(int id, string userId)
     {
-      throw new NotImplementedException();
+      Wish exists = _repo.GetWishByWishId(id);
+      if (exists == null || exists.UserId != userId)
+      {
+        throw new Exception("Invalid Id");
+      }
+      _repo.Delete(id);
+      return "Wish has been deleted";
     }
   }
 }
