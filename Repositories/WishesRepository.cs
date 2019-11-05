@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Dapper;
 using Wishlist2.Models;
 
 namespace Wishlist2.Repositories
@@ -14,31 +15,47 @@ namespace Wishlist2.Repositories
     }
     public IEnumerable<Wish> Get()
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM wishes";
+      return _db.Query<Wish>(sql);
     }
 
     public IEnumerable<Wish> GetWishesByUserId(string userId)
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM wishes WHERE userId = @userId";
+      return _db.Query<Wish>(sql, new { userId });
     }
     public Wish GetWishByWishId(int id)
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM wishes WHERE id = @id";
+      return _db.QueryFirstOrDefault<Wish>(sql, new { id });
     }
 
     public int Create(Wish newWish)
     {
-      throw new NotImplementedException();
+      string sql = @"
+        INSERT INTO wishes
+        (name, description, img, userId)
+        VALUES
+        (@Name, @Description, @Img, @UserId)";
+      return _db.ExecuteScalar<int>(sql, newWish);
     }
 
     public void Edit(Wish wish)
     {
-      throw new NotImplementedException();
+      string sql = @"
+        UPDATE wishes
+        SET
+            name = @Name,
+            description = @Description,
+            img = @Img
+        WHERE id = @id";
+      _db.Execute(sql, wish);
     }
 
     public void Delete(int id)
     {
-      throw new NotImplementedException();
+      string sql = "DELETE FROM wishes WHERE id = @id";
+      _db.Execute(sql, new { id });
     }
   }
 }
